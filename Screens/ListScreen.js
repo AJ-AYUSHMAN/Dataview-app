@@ -1,39 +1,67 @@
 import { useEffect, useState } from "react";
-import { View, FlatList, ActivityIndicator, Text } from "react-native";
-import { getProducts } from "../Services/api";
-import ProductCard from "../components/ProductCard";
+import { View, FlatList, ActivityIndicator, Button, Text } from "react-native";
+import ProductCard from "./components/ProductCard";
+import { getProducts } from "./services/api";
 
 export default function ListScreen({ navigation }) {
-  const [products, setProducts] = useState([]);
+  const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  const fetchProducts = async () => {
+  const loadProducts = async () => {
     try {
+      setError(false);
       const res = await getProducts();
-      setProducts(res.data.products);
+
+      // API returns { products: [...] }
+      setProductList(res.data.products);
+
     } catch (err) {
-      console.log("fetch failed");
+      console.log("product fetch error");
+      setError(true);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    loadProducts();
+
+    // refresh when coming back from Form or Detail
+    const unsub = navigation.addListener("focus", loadProducts);
+    return unsub;
+  }, [navigation]);
 
   if (loading) return <ActivityIndicator size="large" />;
 
+  if (error) {
+    return (
+      <View style={{ padding: 20 }}>
+        <Text>Failed to load products</Text>
+        <Button title="Retry" onPress={loadProducts} />
+      </View>
+    );
+  }
+
   return (
-    <FlatList
-      data={products}
-      keyExtractor={(p) => p.id.toString()}
-      renderItem={({ item }) => (
-        <ProductCard
-          item={item}
-          onPress={() => navigation.navigate("Detail", { id: item.id })}
-        />
-      )}
-    />
+    <View style={{ flex: 1 }}>
+      <Button
+        title="Add Item"
+        onPress={() => navigation.navigate("Form")}
+      />
+
+      <FlatList
+        data={productList}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ProductCard
+            item={item}
+            onPress={() =>
+              navigation.navigate("Detail", { id: item.id })
+            }
+          />
+        )}
+      />
+    </View>
   );
 }
