@@ -1,12 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import ListScreen from './Screens/Listscreen';
 
 
 export default function App() {
   return (
-    <view style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </view>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Products" component={ListScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
