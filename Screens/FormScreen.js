@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, TextInput, Button, Alert, Text } from "react-native";
-import { createLocalItem } from "./Services/api";
+import { createLocalItem } from "../Services/api";
 
 export default function FormScreen({ navigation }) {
   const [title, setTitle] = useState("");

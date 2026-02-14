@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
-import { getProductById } from "./Services/api";
+import { getProductById } from "../Services/api";
 
 export default function DetailScreen({ route }) {
   const { id } = route.params;
