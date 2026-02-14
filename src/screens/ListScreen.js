@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { View, FlatList, ActivityIndicator, Button, Text } from "react-native";
-import ProductCard from "../Components/ProductCard";
-import { getProducts } from "../Services/api";
-
+import ProductCard from "../components/ProductCard";
+import { getProducts } from "../services/api";
+r
 export default function ListScreen({ navigation }) {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);

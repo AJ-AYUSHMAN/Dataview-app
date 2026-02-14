@@ -100,7 +100,7 @@ Used for:
 # 📂 Project Structure
 
 ```
-
+src/
   Components/
      ProductCard.js
 
